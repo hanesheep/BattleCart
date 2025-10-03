@@ -55,6 +55,9 @@ public class PlayerController : MonoBehaviour
         {
             float acceleratedZ = moveDirection.z + (accelerationZ * Time.deltaTime);
             moveDirection.z = Mathf.Clamp(acceleratedZ, 0, speedZ);
+
+            float ratioX = (targetLane * LaneWidth - transform.position.x) / LaneWidth;
+            moveDirection.x = ratioX * speedX;
         }
 
         moveDirection.y -= gravity * Time.deltaTime;
