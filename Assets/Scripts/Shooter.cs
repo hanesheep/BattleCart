@@ -20,7 +20,7 @@ public class Shooter : MonoBehaviour
         Invoke("ShootEnabled", 0.5f);
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        gate = player.transform.Find("Gate").gameObject;
+        gate = player.Find("Gate").gameObject;
         cam = Camera.main;
     }
 
