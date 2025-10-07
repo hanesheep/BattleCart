@@ -27,7 +27,13 @@ public class PlayerController : MonoBehaviour
     public GameObject body;
     public GameObject boms;
 
-    
+    //音にまつわるコンポーネントとSE音情報
+    AudioSource audio;
+    public AudioClip se_shot;
+    public AudioClip se_damage;
+    public AudioClip se_jump;
+
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -66,6 +72,11 @@ public class PlayerController : MonoBehaviour
         controller.Move(globalDirection * Time.deltaTime);
 
         if (controller.isGrounded) moveDirection.y = 0;
+
+        //１秒に1ずつトップスピードの上限値が増える
+        speedZ += Time.deltaTime;
+
+
     }
 
     public void MoveToLeft()
@@ -86,7 +97,12 @@ public class PlayerController : MonoBehaviour
     {
         //もしもスタン中であれば何もせず終了（1行）
         if (IsStun()) return;
-        if (controller.isGrounded) moveDirection.y = speedJump;
+
+        if (controller.isGrounded)
+        {
+            SEPlay(SEType.Jump); //ジャンプ音を鳴らす
+            moveDirection.y = speedJump; 
+        }
     }
 
     public int Life()
@@ -109,8 +125,18 @@ public class PlayerController : MonoBehaviour
         {
             life--;
 
+            SEPlay(SEType.Damage); //ダメージ音を鳴らす
+
+            //スピードをリセット
+            speedZ = 10;
+
             if(life <= 0)
             {
+                SoundManager.instance.StopBgm(); //曲を止める
+
+                //ゲームオーバーになったときにそのポジションZの座標をScoreキーワードでパソコンに保存
+                PlayerPrefs.SetFloat("Score", transform.position.z);
+
                 GameManager.gameState = GameState.gameover;
                 Instantiate(boms, transform.position, Quaternion.identity);
                 Destroy(gameObject, 0.5f);
@@ -126,5 +152,21 @@ public class PlayerController : MonoBehaviour
         float val = Mathf.Sin(Time.time * 50);
         if (val >= 0) body.SetActive(true);
         else body.SetActive(false);
+    }
+
+    public void SEPlay(SEType type)
+    {
+        switch (type)
+        {
+            case SEType.Shot:
+                audio.PlayOneShot(se_shot);
+                break;
+            case SEType.Damage:
+                audio.PlayOneShot(se_damage);
+                break;
+            case SEType.Jump:
+                audio.PlayOneShot(se_jump);
+                break;
+        }
     }
 }

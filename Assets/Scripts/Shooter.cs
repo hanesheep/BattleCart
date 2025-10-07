@@ -15,8 +15,12 @@ public class Shooter : MonoBehaviour
     public int recoverySeconds = 3;
     Camera cam; //カメラ情報の取得
 
+    PlayerController playerCnt; //他オブジェクトについているPlayerControllerスクリプト
+
     void Start()
     {
+        playerCnt = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+
         Invoke("ShootEnabled", 0.5f);
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -42,6 +46,9 @@ public class Shooter : MonoBehaviour
     void Shot()
     {
         if (player == null || shotPower <= 0) return;
+
+        playerCnt.SEPlay(SEType.Shot); //ショット音を鳴らす
+
         GameObject obj = Instantiate(bulletPrefab, gate.transform.position, Quaternion.identity);
         Rigidbody rbody = obj.GetComponent<Rigidbody>();
         Vector3 v = new Vector3(cam.transform.forward.x * shootSpeed,cam.transform.forward.y + upSpeed,cam.transform.forward.z * shootSpeed);
