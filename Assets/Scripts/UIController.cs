@@ -4,21 +4,21 @@ using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
-    //”½‰f‘ÎÛ
+    //åæ˜ å¯¾è±¡
     public TextMeshProUGUI odometerText;
     public TextMeshProUGUI bulletText;
     public TextMeshProUGUI maxScoreText;
     public Slider lifeSlider;
 
-    //ƒf[ƒ^Œ³
+    //ãƒ‡ãƒ¼ã‚¿å…ƒ
     PlayerController player;
     Shooter shooter;
 
-    //ˆê‹L˜^’l
+    //ä¸€æ™‚è¨˜éŒ²å€¤
     int currentShotPower;
     int currentPlayerLife;
 
-    //ƒQ[ƒ€ƒXƒe[ƒ^ƒX‚É‚æ‚é•\¦/”ñ•\¦‚Ìw’è‚Ì‚½‚ßæ“¾
+    //ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã«ã‚ˆã‚‹è¡¨ç¤º/éè¡¨ç¤ºã®æŒ‡å®šã®ãŸã‚å–å¾—
     public GameObject odometerPanel;
     public GameObject bulletPanel;
     public GameObject playerLifePanel;
@@ -27,7 +27,7 @@ public class UIController : MonoBehaviour
 
     void Start()
     {
-        //ƒf[ƒ^Œ³‚ğæ“¾‚µ‚ÄŠeUI‚É”½‰f
+        //ãƒ‡ãƒ¼ã‚¿å…ƒã‚’å–å¾—ã—ã¦å„UIã«åæ˜ 
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         shooter = GameObject.FindGameObjectWithTag("Shooter").GetComponent<Shooter>();
         maxScoreText.text = PlayerPrefs.GetFloat("Score").ToString("F1");
@@ -38,25 +38,25 @@ public class UIController : MonoBehaviour
     {
         if (player == null) return;
 
-        //Å‚‹L˜^‚Ì•Û‘¶
+        //ç¾è¨˜éŒ²ã®ä¿å­˜
         odometerText.text = player.gameObject.transform.position.z.ToString("F1");
 
-        //’e‚Ìc”•\¦
+        //å¼¾ã®æ®‹æ•°è¡¨ç¤º
         if (currentShotPower != shooter.shotPower)
         {
             currentShotPower = shooter.shotPower;
             bulletText.text = currentShotPower.ToString();
         }
 
-        //HP‚Ì•\¦
+        //HPã®è¡¨ç¤º
         if (currentPlayerLife != player.life)
         {
             currentPlayerLife = player.life;
             lifeSlider.value = currentPlayerLife;
         }
 
-        //ƒQ[ƒ€ƒI[ƒo[‚ÉŠeƒpƒlƒ‹‚ğ”ñ•\¦
-        //ƒQ[ƒ€ƒI[ƒo[ƒpƒlƒ‹‚Ì•\¦
+        //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚ã«å„ãƒ‘ãƒãƒ«ã‚’éè¡¨ç¤º
+        //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ãƒ‘ãƒãƒ«ã®è¡¨ç¤º
         if (GameManager.gameState == GameState.gameover)
         {
             odometerPanel.SetActive(false);
@@ -66,11 +66,11 @@ public class UIController : MonoBehaviour
 
             gameOverPanel.SetActive(true);
 
-            //ƒQ[ƒ€ƒI[ƒo[‚ÌƒJ[ƒ\ƒ‹•\¦
-            Cursor.lockState = CursorLockMode.None; //ƒƒbƒN‰ğœ
-            Cursor.visible = true; //ƒJ[ƒ\ƒ‹‚ğ•\¦
+            //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚ã®ã‚«ãƒ¼ã‚½ãƒ«è¡¨ç¤º
+            Cursor.lockState = CursorLockMode.None; //ãƒ­ãƒƒã‚¯è§£é™¤
+            Cursor.visible = true; //ã‚«ãƒ¼ã‚½ãƒ«ã‚’è¡¨ç¤º
 
-            //‰½d‚É‚à•`‰æˆ—‚µ‚È‚¢‚½‚ß‚ÉƒXƒe[ƒ^ƒX•ÏX
+            //ä½•é‡ã«ã‚‚æç”»å‡¦ç†ã—ãªã„ãŸã‚ã«ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å¤‰æ›´ï½“
             GameManager.gameState = GameState.end;
         }
     }

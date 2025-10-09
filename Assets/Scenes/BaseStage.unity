@@ -248,10 +248,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6323111664417500721, guid: 76d63124de7dd9343b3e4d822c39e12f, type: 3}
-      propertyPath: body
-      value: 
-      objectReference: {fileID: 428547704}
     - target: {fileID: 6330983616393158871, guid: 76d63124de7dd9343b3e4d822c39e12f, type: 3}
       propertyPath: m_Name
       value: Player
@@ -301,11 +297,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76d63124de7dd9343b3e4d822c39e12f, type: 3}
---- !u!1 &428547704 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2567677346424811061, guid: 76d63124de7dd9343b3e4d822c39e12f, type: 3}
-  m_PrefabInstance: {fileID: 428547703}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &515760537
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,6 +489,10 @@ PrefabInstance:
     - target: {fileID: 7590839604196182049, guid: dc744dddfc25239409991c0a8cef4838, type: 3}
       propertyPath: m_Name
       value: BasicStage
+      objectReference: {fileID: 0}
+    - target: {fileID: 7590839604196182049, guid: dc744dddfc25239409991c0a8cef4838, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -976,6 +971,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6123415185973413301, guid: cac87392ae4d8924b8decde96f9ac458, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6159783178414139980, guid: cac87392ae4d8924b8decde96f9ac458, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

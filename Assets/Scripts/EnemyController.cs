@@ -14,19 +14,31 @@ public class EnemyController : MonoBehaviour
     public float deletePosY = -10f; //削除される基準のY座標値
     public bool useGravity; //重力に絞られるか空を飛ぶかのフラグ
 
+    //GameObject camera; //カメラ情報
+
     void Start()
     {
+        //カメラのオブジェクト情報の取得
+        //camera = Camera.main.gameObject;
+
         controller = GetComponent<CharacterController>();
 
+        //空中車
         if (useGravity)
         {
-            //空中にいる車は時間経過で消滅する
+            //空中にいる車は時間経過で消滅
             Destroy(gameObject, 20);
         }
     }
 
     void Update()
     {
+        //カメラより後ろにいったら消滅
+        //if(transform.position.z < camera.transform.position.z)
+        //{
+        //    Destroy(gameObject);
+        //}
+
         //ステージ外に落ちたら消滅
         if (transform.position.y <= deletePosY)
         {

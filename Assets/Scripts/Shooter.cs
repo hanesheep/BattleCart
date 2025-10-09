@@ -11,20 +11,27 @@ public class Shooter : MonoBehaviour
 
     bool possibleShoot; //ショット可能フラグ
 
-    public int shotPower = 10;
-    public int recoverySeconds = 3;
+    public int shotPower = 10; //ショットの残数
+    public int recoverySeconds = 3; //一発一発の回復時間
+
     Camera cam; //カメラ情報の取得
 
     PlayerController playerCnt; //他オブジェクトについているPlayerControllerスクリプト
 
     void Start()
     {
+        //PlayerControllerの取得
         playerCnt = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
 
+        //時間差でシュート可能にする
         Invoke("ShootEnabled", 0.5f);
 
+        //プレイヤーのTransform情報の取得
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        //プレイヤーについているGateオブジェクト情報の取得
         gate = player.Find("Gate").gameObject;
+
+        //カメラ情報の取得（MainCameraタグがついているカメラ情報は簡単に参照可）
         cam = Camera.main;
     }
 
@@ -32,39 +39,58 @@ public class Shooter : MonoBehaviour
     {
         if (GameManager.gameState != GameState.playing) return;
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))　//もしも左クリックがおされたら
         {
-            if (possibleShoot) Shot();
+            if (possibleShoot) Shot(); //フラグがONならショットするメソッド
         }
     }
 
+    //ショット可能にする
     void ShootEnabled()
     {
         possibleShoot = true;
     }
 
+    //ショットメソッド
     void Shot()
     {
+        //プレイヤーが消滅していなければ
         if (player == null || shotPower <= 0) return;
 
         playerCnt.SEPlay(SEType.Shot); //ショット音を鳴らす
 
+        //プレイヤーの位置にBulletを生成
         GameObject obj = Instantiate(bulletPrefab, gate.transform.position, Quaternion.identity);
+
+        //生成したBulletのRigidbodyを取得
         Rigidbody rbody = obj.GetComponent<Rigidbody>();
-        Vector3 v = new Vector3(cam.transform.forward.x * shootSpeed,cam.transform.forward.y + upSpeed,cam.transform.forward.z * shootSpeed);
+
+        //※カメラの角度を考慮した方向を生成
+        Vector3 v = new Vector3(
+                    cam.transform.forward.x * shootSpeed,
+                    cam.transform.forward.y * upSpeed,
+                    cam.transform.forward.z * shootSpeed
+                    );
+
+        //生成した球のAddForceの力でシュート
         rbody.AddForce(v, ForceMode.Impulse);
+
+        //shotPowerを消費
         ConsumePower();
     }
 
+    //shotPowerを消費
     void ConsumePower()
     {
-        shotPower--;
-        StartCoroutine(RecoverPower());
+        shotPower--; //消費
+        StartCoroutine(RecoverPower()); //回復コルーチン
     }
 
+    //回復コルーチン
     IEnumerator RecoverPower()
     {
+        //RecoverySeconds秒待つ
         yield return new WaitForSeconds(recoverySeconds);
-        shotPower++;
+        shotPower++; //１つ回復
     }
 }

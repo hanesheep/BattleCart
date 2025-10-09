@@ -3,23 +3,23 @@ using UnityEngine;
 
 public class StageGenerator : MonoBehaviour
 {
-    const int StageChipSize = 120;@//¶¬‚µ‚½ƒ`ƒbƒv‚ğ”z’u‚·‚é‚É‚ ‚½‚Á‚Ä‚Ìƒ`ƒbƒv‚Ì‘å‚«‚³
+    const int StageChipSize = 120; //ç”Ÿæˆã—ãŸãƒãƒƒãƒ—ã‚’é…ç½®ã™ã‚‹ã«ã‚ãŸã£ã¦ã®ãƒãƒƒãƒ—ã®å¤§ãã•
 
-    int currentChipIndex;   //Œ»İ‚Ç‚Ìƒ`ƒbƒv‚Ü‚Åì‚Á‚½‚©
+    int currentChipIndex; //ç¾åœ¨ã©ã®ãƒãƒƒãƒ—ã¾ã§ä½œã£ãŸã‹
 
-    Transform player;@//ƒvƒŒƒCƒ„[‚Ìƒgƒ‰ƒ“ƒXƒtƒH[ƒ€î•ñ‚Ìæ“¾
+    Transform player; //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®Transformæƒ…å ±ã®å–å¾—
 
-    public GameObject[] stageChips;//¶¬‚·‚×‚«ƒIƒuƒWƒFƒNƒg‚ğ”z—ñ‚ÉŠi”[
+    public GameObject[] stageChips; //ç”Ÿæˆã™ã¹ãã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é…åˆ—ã«æ ¼ç´
 
-    public int startChipIndex;@//ƒ`ƒbƒv”Ô†‚ÌŠJn
-    public int preInstantiate;@//—]•ª‚Éì‚Á‚Ä‚¨‚­”
+    public int startChipIndex; //ãƒãƒƒãƒ—ç•ªå·ã®é–‹å§‹
+    public int preInstantiate; //ä½™åˆ†ã«ä½œã£ã¦ãŠãæ•°
 
-    //Œ»İ¶¬‚µ‚½ƒIƒuƒWƒFƒNƒg‚ÌŠÇ——p
+    //ç¾åœ¨ç”Ÿæˆã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç®¡ç†ç”¨
     public List<GameObject> generatedStageList = new List<GameObject>();
 
     void Start()
     {
-        //Transform‚Ìæ“¾
+        //Transformã‚’ç²å¾—
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
         currentChipIndex = startChipIndex - 1;
@@ -28,10 +28,12 @@ public class StageGenerator : MonoBehaviour
 
     void Update()
     {
-        if(player == null)
+        if (player != null)
         {
-            int charaPositionIndex = (int)(player.position.z * StageChipSize);
+            // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ä½ç½®ã‹ã‚‰ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ã‚¸ãƒãƒƒãƒ—ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’è¨ˆç®—
+            int charaPositionIndex = (int)(player.position.z / StageChipSize);
 
+            // æ¬¡ã®ã‚¹ãƒ†ãƒ¼ã‚¸ãƒãƒƒãƒ—ã«å…¥ã£ãŸã‚‰ã‚¹ãƒ†ãƒ¼ã‚¸ã®æ›´æ–°å‡¦ç†ã‚’ãŠã“ãªã†
             if (charaPositionIndex + preInstantiate > currentChipIndex)
             {
                 UpdateStage(charaPositionIndex + preInstantiate);
@@ -39,39 +41,41 @@ public class StageGenerator : MonoBehaviour
         }
     }
 
-    //w’è‚ÌIndex‚Ü‚Å‚ÌƒXƒe[ƒWƒ`ƒbƒv‚ğ¶¬‚µ‚ÄAŠÇ—‰º‚É’u‚­
+    // æŒ‡å®šã®Indexã¾ã§ã®ã‚¹ãƒ†ãƒ¼ã‚¸ãƒãƒƒãƒ—ã‚’ç”Ÿæˆã—ã¦ã€ç®¡ç†åŒ–ã«ç½®ã
     void UpdateStage(int toChipIndex)
     {
         if (toChipIndex <= currentChipIndex) return;
 
-        //w’è‚ÌƒXƒe[ƒWƒ`ƒbƒv‚Ü‚Å‚ğì¬
-        for(int i = currentChipIndex +1; i <=toChipIndex; i++)
+        // æŒ‡å®šã®ã‚¹ãƒ†ãƒ¼ã‚¸ãƒãƒƒãƒ—ã¾ã§ã‚’ä½œæˆ 
+        for (int i = currentChipIndex + 1; i <= toChipIndex; i++)
         {
             GameObject stageObject = GenerateStage(i);
 
-            //¶¬‚µ‚½ƒXƒe[ƒWƒ`ƒbƒv‚ğŠÇ—ƒŠƒXƒg‚É’Ç‰Á
+            // ç”Ÿæˆã—ãŸã‚¹ãƒ†ãƒ¼ã‚¸ãƒãƒƒãƒ—ã‚’ç®¡ç†ãƒªã‚¹ãƒˆã«è¿½åŠ 
             generatedStageList.Add(stageObject);
         }
-        //ƒXƒe[ƒW•ÛãŒÀ“à‚É‚È‚é‚Ü‚ÅŒÃ‚¢ƒXƒe[ƒW‚ğíœ
+
+        // ã‚¹ãƒ†ãƒ¼ã‚¸ä¿æŒä¸Šé™å†…ã«ãªã‚‹ã¾ã§å¤ã„ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’å‰Šé™¤
         while (generatedStageList.Count > preInstantiate + 2) DestroyOldestStage();
 
         currentChipIndex = toChipIndex;
     }
 
-    //w’è‚ÌƒCƒ“ƒfƒbƒNƒXˆÊ’u‚ÉStageƒIƒuƒWƒFƒNƒg‚ğƒ‰ƒ“ƒ_ƒ€‚É¶¬
-    GameObject GenerateStage(int index)
+    // æŒ‡å®šã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ä½ç½®ã«Stageã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«ç”Ÿæˆ
+    GameObject GenerateStage(int chipIndex)
     {
         int nextStageChip = Random.Range(0, stageChips.Length);
 
         GameObject stageObject = Instantiate(
             stageChips[nextStageChip],
-            new Vector3(0, 0, currentChipIndex * StageChipSize),
-            Quaternion.identity);
+            new Vector3(0, 0, chipIndex * StageChipSize),
+            Quaternion.identity
+        );
 
         return stageObject;
     }
 
-    //ˆê”ÔŒÃ‚¢ƒXƒe[ƒW‚ğíœ
+    // ä¸€ç•ªå¤ã„ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’å‰Šé™¤
     void DestroyOldestStage()
     {
         GameObject oldStage = generatedStageList[0];
